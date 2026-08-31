@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragmentos/plantilla :: cabeza('Error')}"></head>
+
+<body>
+	<header th:replace="~{fragmentos/plantilla :: menu('')}"></header>
+
+	<main>
+		<div class="tarjeta">
+			<h1 th:text="${titulo}">Ocurrio un problema</h1>
+			<p class="subtitulo" th:text="${mensaje}">Detalle del error.</p>
+			<a class="boton" th:href="@{/}">Volver al inicio</a>
+		</div>
+	</main>
+
+	<footer th:replace="~{fragmentos/plantilla :: pie}"></footer>
+</body>
+
+</html>

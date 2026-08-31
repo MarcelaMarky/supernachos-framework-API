@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragmentos/plantilla :: cabeza('Productos')}"></head>
+
+<body>
+	<header th:replace="~{fragmentos/plantilla :: menu('productos')}"></header>
+
+	<main>
+		<div class="encabezado-seccion">
+			<div>
+				<h1>Productos</h1>
+				<p class="subtitulo">Inventario disponible en la tienda.</p>
+			</div>
+			<a class="boton" th:href="@{/productos/nuevo}">Nuevo producto</a>
+		</div>
+
+		<div th:replace="~{fragmentos/plantilla :: alertas}"></div>
+
+		<form class="busqueda" method="get" th:action="@{/productos}" style="margin-bottom:18px;">
+			<input type="text" name="busqueda" th:value="${busqueda}" placeholder="Buscar por nombre o categoria">
+			<button class="boton secundario" type="submit">Buscar</button>
+			<a class="boton secundario" th:href="@{/productos}" th:if="${busqueda != null and !busqueda.isEmpty()}">Limpiar</a>
+		</form>
+
+		<table>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Nombre</th>
+					<th>Categoria</th>
+					<th class="derecha">Precio</th>
+					<th class="derecha">Stock</th>
+					<th class="derecha">Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="producto : ${productos}">
+					<td th:text="${producto.idProducto}">1</td>
+					<td th:text="${producto.nombre}">Nombre</td>
+					<td th:text="${producto.categoria}">Categoria</td>
+					<td class="derecha"
+						th:text="'$ ' + ${#numbers.formatDecimal(producto.precio, 1, 'POINT', 2, 'COMMA')}">$ 0</td>
+					<td class="derecha">
+						<span class="etiqueta-stock" th:classappend="${producto.stock < 5} ? 'bajo'"
+							th:text="${producto.stock}">0</span>
+					</td>
+					<td>
+						<div class="acciones">
+							<a class="boton secundario pequeno" th:href="@{/productos/editar/{id}(id=${producto.idProducto})}">Editar</a>
+							<form method="post" th:action="@{/productos/eliminar/{id}(id=${producto.idProducto})}"
+								onsubmit="return confirm('Desea eliminar este producto?');">
+								<button class="boton peligro pequeno" type="submit">Eliminar</button>
+							</form>
+						</div>
+					</td>
+				</tr>
+				<tr th:if="${#lists.isEmpty(productos)}">
+					<td colspan="6" class="vacio">No hay productos para mostrar.</td>
+				</tr>
+			</tbody>
+		</table>
+	</main>
+
+	<footer th:replace="~{fragmentos/plantilla :: pie}"></footer>
+</body>
+
+</html>

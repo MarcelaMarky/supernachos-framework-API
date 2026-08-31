@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragmentos/plantilla :: cabeza('Empleados')}"></head>
+
+<body>
+	<header th:replace="~{fragmentos/plantilla :: menu('empleados')}"></header>
+
+	<main>
+		<div class="encabezado-seccion">
+			<div>
+				<h1>Empleados</h1>
+				<p class="subtitulo">Personal que atiende la tienda.</p>
+			</div>
+			<a class="boton" th:href="@{/empleados/nuevo}">Nuevo empleado</a>
+		</div>
+
+		<div th:replace="~{fragmentos/plantilla :: alertas}"></div>
+
+		<form class="busqueda" method="get" th:action="@{/empleados}" style="margin-bottom:18px;">
+			<input type="text" name="busqueda" th:value="${busqueda}" placeholder="Buscar por nombre o cargo">
+			<button class="boton secundario" type="submit">Buscar</button>
+			<a class="boton secundario" th:href="@{/empleados}" th:if="${busqueda != null and !busqueda.isEmpty()}">Limpiar</a>
+		</form>
+
+		<table>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Nombre</th>
+					<th>Cargo</th>
+					<th>Telefono</th>
+					<th>Correo</th>
+					<th class="derecha">Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="empleado : ${empleados}">
+					<td th:text="${empleado.idEmpleado}">1</td>
+					<td th:text="${empleado.nombre}">Nombre</td>
+					<td th:text="${empleado.cargo}">Cargo</td>
+					<td th:text="${empleado.telefono}">Telefono</td>
+					<td th:text="${empleado.correo}">Correo</td>
+					<td>
+						<div class="acciones">
+							<a class="boton secundario pequeno" th:href="@{/empleados/editar/{id}(id=${empleado.idEmpleado})}">Editar</a>
+							<form method="post" th:action="@{/empleados/eliminar/{id}(id=${empleado.idEmpleado})}"
+								onsubmit="return confirm('Desea eliminar este empleado?');">
+								<button class="boton peligro pequeno" type="submit">Eliminar</button>
+							</form>
+						</div>
+					</td>
+				</tr>
+				<tr th:if="${#lists.isEmpty(empleados)}">
+					<td colspan="6" class="vacio">No hay empleados para mostrar.</td>
+				</tr>
+			</tbody>
+		</table>
+	</main>
+
+	<footer th:replace="~{fragmentos/plantilla :: pie}"></footer>
+</body>
+
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragmentos/plantilla :: cabeza('Inicio')}"></head>
+
+<body>
+	<header th:replace="~{fragmentos/plantilla :: menu('inicio')}"></header>
+
+	<main>
+		<h1>Panel general</h1>
+		<p class="subtitulo">Resumen del inventario y las ventas de la tienda.</p>
+
+		<div th:replace="~{fragmentos/plantilla :: alertas}"></div>
+
+		<section class="indicadores">
+			<div class="tarjeta indicador">
+				<div class="etiqueta">Productos</div>
+				<div class="valor" th:text="${totalProductos}">0</div>
+			</div>
+			<div class="tarjeta indicador">
+				<div class="etiqueta">Clientes</div>
+				<div class="valor" th:text="${totalClientes}">0</div>
+			</div>
+			<div class="tarjeta indicador">
+				<div class="etiqueta">Empleados</div>
+				<div class="valor" th:text="${totalEmpleados}">0</div>
+			</div>
+			<div class="tarjeta indicador">
+				<div class="etiqueta">Ventas</div>
+				<div class="valor" th:text="${totalVentas}">0</div>
+			</div>
+			<div class="tarjeta indicador">
+				<div class="etiqueta">Total vendido</div>
+				<div class="valor" th:text="'$ ' + ${#numbers.formatDecimal(montoVendido, 1, 'POINT', 2, 'COMMA')}">$ 0</div>
+			</div>
+		</section>
+
+		<div class="encabezado-seccion">
+			<h1 style="font-size:20px;">Ultimas ventas</h1>
+			<a class="boton" th:href="@{/ventas/nueva}">Registrar venta</a>
+		</div>
+
+		<table>
+			<thead>
+				<tr>
+					<th>N.</th>
+					<th>Fecha</th>
+					<th>Cliente</th>
+					<th>Atendio</th>
+					<th class="derecha">Total</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="venta : ${ultimasVentas}">
+					<td th:text="${venta.idVenta}">1</td>
+					<td th:text="${#temporals.format(venta.fecha, 'dd/MM/yyyy')}">01/01/2026</td>
+					<td th:text="${venta.cliente != null} ? ${venta.cliente.nombre} : '-'">Cliente</td>
+					<td th:text="${venta.empleado != null} ? ${venta.empleado.nombre} : '-'">Empleado</td>
+					<td class="derecha"
+						th:text="'$ ' + ${#numbers.formatDecimal(venta.total, 1, 'POINT', 2, 'COMMA')}">$ 0</td>
+				</tr>
+				<tr th:if="${#lists.isEmpty(ultimasVentas)}">
+					<td colspan="5" class="vacio">Todavia no hay ventas registradas.</td>
+				</tr>
+			</tbody>
+		</table>
+	</main>
+
+	<footer th:replace="~{fragmentos/plantilla :: pie}"></footer>
+</body>
+
+</html>

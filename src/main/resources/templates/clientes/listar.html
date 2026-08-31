@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragmentos/plantilla :: cabeza('Clientes')}"></head>
+
+<body>
+	<header th:replace="~{fragmentos/plantilla :: menu('clientes')}"></header>
+
+	<main>
+		<div class="encabezado-seccion">
+			<div>
+				<h1>Clientes</h1>
+				<p class="subtitulo">Personas registradas en la tienda.</p>
+			</div>
+			<a class="boton" th:href="@{/clientes/nuevo}">Nuevo cliente</a>
+		</div>
+
+		<div th:replace="~{fragmentos/plantilla :: alertas}"></div>
+
+		<form class="busqueda" method="get" th:action="@{/clientes}" style="margin-bottom:18px;">
+			<input type="text" name="busqueda" th:value="${busqueda}" placeholder="Buscar por nombre">
+			<button class="boton secundario" type="submit">Buscar</button>
+			<a class="boton secundario" th:href="@{/clientes}" th:if="${busqueda != null and !busqueda.isEmpty()}">Limpiar</a>
+		</form>
+
+		<table>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Nombre</th>
+					<th>Telefono</th>
+					<th>Direccion</th>
+					<th class="derecha">Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="cliente : ${clientes}">
+					<td th:text="${cliente.idCliente}">1</td>
+					<td th:text="${cliente.nombre}">Nombre</td>
+					<td th:text="${cliente.telefono}">Telefono</td>
+					<td th:text="${cliente.direccion}">Direccion</td>
+					<td>
+						<div class="acciones">
+							<a class="boton secundario pequeno" th:href="@{/clientes/editar/{id}(id=${cliente.idCliente})}">Editar</a>
+							<form method="post" th:action="@{/clientes/eliminar/{id}(id=${cliente.idCliente})}"
+								onsubmit="return confirm('Desea eliminar este cliente?');">
+								<button class="boton peligro pequeno" type="submit">Eliminar</button>
+							</form>
+						</div>
+					</td>
+				</tr>
+				<tr th:if="${#lists.isEmpty(clientes)}">
+					<td colspan="5" class="vacio">No hay clientes para mostrar.</td>
+				</tr>
+			</tbody>
+		</table>
+	</main>
+
+	<footer th:replace="~{fragmentos/plantilla :: pie}"></footer>
+</body>
+
+</html>

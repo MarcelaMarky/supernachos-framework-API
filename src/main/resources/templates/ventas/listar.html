@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragmentos/plantilla :: cabeza('Ventas')}"></head>
+
+<body>
+	<header th:replace="~{fragmentos/plantilla :: menu('ventas')}"></header>
+
+	<main>
+		<div class="encabezado-seccion">
+			<div>
+				<h1>Ventas</h1>
+				<p class="subtitulo">Registro de ventas realizadas en la tienda.</p>
+			</div>
+			<a class="boton" th:href="@{/ventas/nueva}">Registrar venta</a>
+		</div>
+
+		<div th:replace="~{fragmentos/plantilla :: alertas}"></div>
+
+		<table>
+			<thead>
+				<tr>
+					<th>N.</th>
+					<th>Fecha</th>
+					<th>Cliente</th>
+					<th>Atendio</th>
+					<th class="derecha">Articulos</th>
+					<th class="derecha">Total</th>
+					<th class="derecha">Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="venta : ${ventas}">
+					<td th:text="${venta.idVenta}">1</td>
+					<td th:text="${#temporals.format(venta.fecha, 'dd/MM/yyyy')}">01/01/2026</td>
+					<td th:text="${venta.cliente != null} ? ${venta.cliente.nombre} : '-'">Cliente</td>
+					<td th:text="${venta.empleado != null} ? ${venta.empleado.nombre} : '-'">Empleado</td>
+					<td class="derecha" th:text="${#lists.size(venta.detalles)}">0</td>
+					<td class="derecha" th:text="'$ ' + ${#numbers.formatDecimal(venta.total, 1, 'POINT', 2, 'COMMA')}">$ 0</td>
+					<td>
+						<div class="acciones">
+							<a class="boton secundario pequeno" th:href="@{/ventas/{id}(id=${venta.idVenta})}">Ver</a>
+							<form method="post" th:action="@{/ventas/eliminar/{id}(id=${venta.idVenta})}"
+								onsubmit="return confirm('Al anular la venta el stock regresa al inventario. Continuar?');">
+								<button class="boton peligro pequeno" type="submit">Anular</button>
+							</form>
+						</div>
+					</td>
+				</tr>
+				<tr th:if="${#lists.isEmpty(ventas)}">
+					<td colspan="7" class="vacio">No hay ventas registradas.</td>
+				</tr>
+			</tbody>
+		</table>
+	</main>
+
+	<footer th:replace="~{fragmentos/plantilla :: pie}"></footer>
+</body>
+
+</html>

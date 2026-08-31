@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragmentos/plantilla :: cabeza('Registrar venta')}"></head>
+
+<body>
+	<header th:replace="~{fragmentos/plantilla :: menu('ventas')}"></header>
+
+	<main>
+		<h1>Registrar venta</h1>
+		<p class="subtitulo">El total se calcula con el precio actual de cada producto y el stock se descuenta al guardar.</p>
+
+		<div th:replace="~{fragmentos/plantilla :: alertas}"></div>
+
+		<div class="tarjeta">
+			<form method="post" th:action="@{/ventas/guardar}" th:object="${ventaForm}">
+
+				<div class="rejilla-2">
+					<div class="campo">
+						<label for="fecha">Fecha</label>
+						<input type="date" id="fecha" th:field="*{fecha}">
+						<div class="error-campo" th:if="${#fields.hasErrors('fecha')}" th:errors="*{fecha}"></div>
+					</div>
+					<div class="campo">
+						<label for="idCliente">Cliente</label>
+						<select id="idCliente" th:field="*{idCliente}">
+							<option value="">-- Seleccione --</option>
+							<option th:each="c : ${clientes}" th:value="${c.idCliente}" th:text="${c.nombre}"></option>
+						</select>
+						<div class="error-campo" th:if="${#fields.hasErrors('idCliente')}" th:errors="*{idCliente}"></div>
+					</div>
+					<div class="campo">
+						<label for="idEmpleado">Empleado</label>
+						<select id="idEmpleado" th:field="*{idEmpleado}">
+							<option value="">-- Seleccione --</option>
+							<option th:each="e : ${empleados}" th:value="${e.idEmpleado}" th:text="${e.nombre}"></option>
+						</select>
+						<div class="error-campo" th:if="${#fields.hasErrors('idEmpleado')}" th:errors="*{idEmpleado}"></div>
+					</div>
+				</div>
+
+				<label style="margin-top:10px;">Productos de la venta</label>
+				<table style="margin-bottom:14px;">
+					<thead>
+						<tr>
+							<th>Producto</th>
+							<th style="width:140px;">Cantidad</th>
+							<th class="derecha" style="width:140px;">Subtotal</th>
+							<th style="width:60px;"></th>
+						</tr>
+					</thead>
+					<tbody id="cuerpoLineas">
+						<tr class="linea" th:each="linea, iter : *{lineas}">
+							<td>
+								<select class="selProducto" th:field="*{lineas[__${iter.index}__].idProducto}">
+									<option value="">-- Seleccione --</option>
+									<option th:each="p : ${productos}" th:value="${p.idProducto}"
+										th:attr="data-precio=${p.precio}"
+										th:text="${p.nombre} + ' (stock: ' + ${p.stock} + ')'"></option>
+								</select>
+							</td>
+							<td>
+								<input type="number" min="1" class="txtCantidad"
+									th:field="*{lineas[__${iter.index}__].cantidad}">
+							</td>
+							<td class="derecha subtotal">$ 0.00</td>
+							<td>
+								<button type="button" class="boton secundario pequeno quitar">X</button>
+							</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="2" class="derecha"><strong>Total estimado</strong></td>
+							<td class="derecha"><strong id="totalGeneral">$ 0.00</strong></td>
+							<td></td>
+						</tr>
+					</tfoot>
+				</table>
+
+				<div class="acciones" style="justify-content:space-between;">
+					<button type="button" class="boton secundario" id="btnAgregar">Agregar producto</button>
+					<div class="acciones">
+						<a class="boton secundario" th:href="@{/ventas}">Cancelar</a>
+						<button class="boton" type="submit">Guardar venta</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</main>
+
+	<footer th:replace="~{fragmentos/plantilla :: pie}"></footer>
+
+	<script th:src="@{/js/ventas.js}"></script>
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragmentos/plantilla :: cabeza('Cliente')}"></head>
+
+<body>
+	<header th:replace="~{fragmentos/plantilla :: menu('clientes')}"></header>
+
+	<main>
+		<h1 th:text="${cliente.idCliente == null} ? 'Nuevo cliente' : 'Editar cliente'">Nuevo cliente</h1>
+		<p class="subtitulo">Datos de contacto del cliente.</p>
+
+		<div class="tarjeta">
+			<form method="post" th:action="@{/clientes/guardar}" th:object="${cliente}">
+				<input type="hidden" th:field="*{idCliente}">
+
+				<div class="campo">
+					<label for="nombre">Nombre</label>
+					<input type="text" id="nombre" th:field="*{nombre}">
+					<div class="error-campo" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+				</div>
+
+				<div class="rejilla-2">
+					<div class="campo">
+						<label for="telefono">Telefono</label>
+						<input type="text" id="telefono" th:field="*{telefono}">
+						<div class="error-campo" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></div>
+					</div>
+					<div class="campo">
+						<label for="direccion">Direccion</label>
+						<input type="text" id="direccion" th:field="*{direccion}">
+						<div class="error-campo" th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}"></div>
+					</div>
+				</div>
+
+				<div class="acciones" style="justify-content:flex-start;">
+					<button class="boton" type="submit">Guardar</button>
+					<a class="boton secundario" th:href="@{/clientes}">Cancelar</a>
+				</div>
+			</form>
+		</div>
+	</main>
+
+	<footer th:replace="~{fragmentos/plantilla :: pie}"></footer>
+</body>
+
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragmentos/plantilla :: cabeza('Empleado')}"></head>
+
+<body>
+	<header th:replace="~{fragmentos/plantilla :: menu('empleados')}"></header>
+
+	<main>
+		<h1 th:text="${empleado.idEmpleado == null} ? 'Nuevo empleado' : 'Editar empleado'">Nuevo empleado</h1>
+		<p class="subtitulo">Datos del personal de la tienda.</p>
+
+		<div class="tarjeta">
+			<form method="post" th:action="@{/empleados/guardar}" th:object="${empleado}">
+				<input type="hidden" th:field="*{idEmpleado}">
+
+				<div class="rejilla-2">
+					<div class="campo">
+						<label for="nombre">Nombre</label>
+						<input type="text" id="nombre" th:field="*{nombre}">
+						<div class="error-campo" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+					</div>
+					<div class="campo">
+						<label for="cargo">Cargo</label>
+						<input type="text" id="cargo" th:field="*{cargo}" placeholder="Ej: Cajero">
+						<div class="error-campo" th:if="${#fields.hasErrors('cargo')}" th:errors="*{cargo}"></div>
+					</div>
+					<div class="campo">
+						<label for="telefono">Telefono</label>
+						<input type="text" id="telefono" th:field="*{telefono}">
+						<div class="error-campo" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></div>
+					</div>
+					<div class="campo">
+						<label for="correo">Correo</label>
+						<input type="email" id="correo" th:field="*{correo}">
+						<div class="error-campo" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}"></div>
+					</div>
+				</div>
+
+				<div class="acciones" style="justify-content:flex-start;">
+					<button class="boton" type="submit">Guardar</button>
+					<a class="boton secundario" th:href="@{/empleados}">Cancelar</a>
+				</div>
+			</form>
+		</div>
+	</main>
+
+	<footer th:replace="~{fragmentos/plantilla :: pie}"></footer>
+</body>
+
+</html>
