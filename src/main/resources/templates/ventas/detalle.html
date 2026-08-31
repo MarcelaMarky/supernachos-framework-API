@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragmentos/plantilla :: cabeza('Detalle de venta')}"></head>
+
+<body>
+	<header th:replace="~{fragmentos/plantilla :: menu('ventas')}"></header>
+
+	<main>
+		<div class="encabezado-seccion">
+			<div>
+				<h1 th:text="'Venta N. ' + ${venta.idVenta}">Venta</h1>
+				<p class="subtitulo" th:text="${#temporals.format(venta.fecha, 'dd/MM/yyyy')}">Fecha</p>
+			</div>
+			<a class="boton secundario" th:href="@{/ventas}">Volver</a>
+		</div>
+
+		<div class="tarjeta" style="margin-bottom:22px;">
+			<div class="rejilla-2">
+				<div>
+					<label>Cliente</label>
+					<p th:text="${venta.cliente != null} ? ${venta.cliente.nombre} : 'Sin cliente'">Cliente</p>
+				</div>
+				<div>
+					<label>Atendido por</label>
+					<p th:text="${venta.empleado != null} ? ${venta.empleado.nombre} : 'Sin empleado'">Empleado</p>
+				</div>
+			</div>
+		</div>
+
+		<table>
+			<thead>
+				<tr>
+					<th>Producto</th>
+					<th>Categoria</th>
+					<th class="derecha">Cantidad</th>
+					<th class="derecha">Subtotal</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="detalle : ${venta.detalles}">
+					<td th:text="${detalle.producto != null} ? ${detalle.producto.nombre} : '-'">Producto</td>
+					<td th:text="${detalle.producto != null} ? ${detalle.producto.categoria} : '-'">Categoria</td>
+					<td class="derecha" th:text="${detalle.cantidad}">1</td>
+					<td class="derecha" th:text="'$ ' + ${#numbers.formatDecimal(detalle.subtotal, 1, 'POINT', 2, 'COMMA')}">$ 0</td>
+				</tr>
+				<tr>
+					<td colspan="3" class="derecha"><strong>Total</strong></td>
+					<td class="derecha">
+						<strong th:text="'$ ' + ${#numbers.formatDecimal(venta.total, 1, 'POINT', 2, 'COMMA')}">$ 0</strong>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</main>
+
+	<footer th:replace="~{fragmentos/plantilla :: pie}"></footer>
+</body>
+
+</html>

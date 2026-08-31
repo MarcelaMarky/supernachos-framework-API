@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="cabeza(titulo)">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title th:text="'Super Nachos Market | ' + ${titulo}">Super Nachos Market</title>
+	<link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+
+<body>
+
+	<header class="barra" th:fragment="menu(activo)">
+		<a class="marca" th:href="@{/}">Super <span>Nachos</span> Market</a>
+		<nav>
+			<a th:href="@{/}" th:classappend="${activo == 'inicio'} ? 'activo'">Inicio</a>
+			<a th:href="@{/productos}" th:classappend="${activo == 'productos'} ? 'activo'">Productos</a>
+			<a th:href="@{/clientes}" th:classappend="${activo == 'clientes'} ? 'activo'">Clientes</a>
+			<a th:href="@{/empleados}" th:classappend="${activo == 'empleados'} ? 'activo'">Empleados</a>
+			<a th:href="@{/ventas}" th:classappend="${activo == 'ventas'} ? 'activo'">Ventas</a>
+		</nav>
+	</header>
+
+	<div th:fragment="alertas">
+		<div class="alerta exito" th:if="${exito}" th:text="${exito}"></div>
+		<div class="alerta error" th:if="${error}" th:text="${error}"></div>
+	</div>
+
+	<footer class="pie" th:fragment="pie">
+		<p>Super Nachos Market &middot; Proyecto formativo Fase 7 &middot; Spring Boot + Thymeleaf</p>
+	</footer>
+
+</body>
+
+</html>
