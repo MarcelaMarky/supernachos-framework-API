@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragmentos/plantilla :: cabeza('Iniciar sesion')}"></head>
+
+<body>
+	<style>
+		main.login {
+			max-width: 420px;
+		}
+
+		input[type="password"] {
+			width: 100%;
+			padding: 10px 12px;
+			border: 1px solid var(--borde);
+			border-radius: 7px;
+			font-size: 15px;
+			background: #fff;
+			font-family: inherit;
+		}
+	</style>
+
+	<header class="barra">
+		<a class="marca" th:href="@{/login}">Super <span>Nachos</span> Market</a>
+	</header>
+
+	<main class="login">
+		<h1>Iniciar sesion</h1>
+		<p class="subtitulo">Ingresa tus datos para acceder al sistema.</p>
+
+		<div th:replace="~{fragmentos/plantilla :: alertas}"></div>
+
+		<div class="tarjeta">
+			<form method="post" th:action="@{/login}">
+				<div class="campo">
+					<label for="usuario">Usuario</label>
+					<input type="text" id="usuario" name="usuario" th:value="${usuario}" required autofocus>
+				</div>
+
+				<div class="campo">
+					<label for="clave">Clave</label>
+					<input type="password" id="clave" name="clave" required>
+				</div>
+
+				<div class="acciones" style="justify-content:flex-start;">
+					<button class="boton" type="submit">Ingresar</button>
+				</div>
+			</form>
+		</div>
+	</main>
+
+	<footer th:replace="~{fragmentos/plantilla :: pie}"></footer>
+</body>
+
+</html>

@@ -19,6 +19,9 @@
 			<a th:href="@{/empleados}" th:classappend="${activo == 'empleados'} ? 'activo'">Empleados</a>
 			<a th:href="@{/ventas}" th:classappend="${activo == 'ventas'} ? 'activo'">Ventas</a>
 		</nav>
+		<nav style="margin-left:auto;">
+			<a th:href="@{/logout}">Cerrar sesion</a>
+		</nav>
 	</header>
 
 	<div th:fragment="alertas">
