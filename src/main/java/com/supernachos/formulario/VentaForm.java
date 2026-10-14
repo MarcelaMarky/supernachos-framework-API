@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.validation.constraints.NotNull;
 
 /**
@@ -15,7 +17,9 @@ public class VentaForm {
 
 	private Integer idVenta;
 
+	/** Formato yyyy-MM-dd, el unico que acepta el campo input type="date" del navegador. */
 	@NotNull(message = "La fecha es obligatoria")
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	private LocalDate fecha = LocalDate.now();
 
 	@NotNull(message = "Debe seleccionar un cliente")
